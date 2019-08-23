@@ -40,23 +40,23 @@ DEALINGS IN THE SOFTWARE.
 
 #include "Button.h"
 #include "MultiButton.h"
-#include "ZI2C.h"
-#include "ZSPI.h"
-#include "LIS3DH.h"
-#include "LinearAnalogSensor.h"
-#include "NonLinearAnalogSensor.h"
-#include "TouchSensor.h"
+//#include "ZI2C.h"
+//#include "ZSPI.h"
+//#include "LIS3DH.h"
+//#include "LinearAnalogSensor.h"
+//#include "NonLinearAnalogSensor.h"
+//#include "TouchSensor.h"
 #include "SAMDTCTimer.h"
 #include "SAMDTCCTimer.h"
-#include "SAMDSerial.h"
+//#include "SAMDSerial.h"
 
 #include "RhubarbIO.h"
 
 #include "CodalFiber.h"
 #include "MessageBus.h"
 
-#include "ZSingleWireSerial.h"
-#include "JACDAC.h"
+//#include "ZSingleWireSerial.h"
+//#include "JACDAC.h"
 
 namespace codal
 {
@@ -83,20 +83,20 @@ namespace codal
         uint8_t                     status;
 
         public:
-        SAMDTCTimer                 tc4;
+        //SAMDTCTimer                 tc4;
         SAMDTCTimer                 tc3;
         Timer                       timer;
         MessageBus                  messageBus;
-        CircuitPlaygroundIO         io;
+        RhubarbIO                   io;
         Button                      buttonA;
         Button                      buttonB;
         MultiButton                 buttonAB;
 
-        ZSPI                        flashSPI;
+        //ZSPI                        flashSPI;
 
-        ZSingleWireSerial           sws;
-        JDPhysicalLayer             bus;
-        JACDAC                      jacdac;
+        //ZSingleWireSerial           sws;
+        //JDPhysicalLayer             bus;
+        //JACDAC                      jacdac;
 
         /**
           * Constructor.

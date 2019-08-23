@@ -41,9 +41,6 @@
         "USE_FULL_ASSERT": 1,
         "CODAL_CPU_MHZ": 48,
         "SAMD_PIN_ARRAY":1,
-        "PROTOTYPE_SERCOM_SPI_M_SYNC": "SERCOM0",
-        "PROTOTYPE_SERCOM_I2CM_SYNC": "SERCOM1",
-        "PROTOTYPE_SERCOM_USART_ASYNC": "SERCOM2"
     },
     "definitions":"-DSAMDX1 -D__SAMD21E18A__",
     "cpu_opts":"-mcpu=cortex-m0plus -mthumb",
@@ -59,20 +56,8 @@
             "type":"git"
         },
         {
-            "name":"mbed-classic",
-            "url":"https://github.com/lancaster-university/mbed-classic",
-            "branch":"new-build-system",
-            "type":"git"
-        },
-        {
-            "name":"codal-samd21",
-            "url":"https://github.com/lancaster-university/codal-samd21",
-            "branch":"master",
-            "type":"git"
-        },
-        {
-            "name":"codal-mbed",
-            "url":"https://github.com/lancaster-university/codal-mbed",
+            "name":"codal-samd",
+            "url":"../codal-samd",
             "branch":"master",
             "type":"git"
         }
