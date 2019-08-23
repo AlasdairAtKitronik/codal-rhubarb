@@ -22,17 +22,17 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-#include "CircuitPlayground.h"
+#include "Rhubarb.h"
 
-CircuitPlayground cplay;
+Rhubarb rhubarb;
 
 int main()
 {
     int status = 0;
     while(1)
     {
-        cplay.io.led.setDigitalValue(status);
-        cplay.sleep(1000);
+        rhubarb.io.led.setDigitalValue(status);
+        rhubarb.sleep(1000);
         status = !status;
     }
 }

@@ -22,8 +22,8 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef CIRCUIT_PLAYGROUND_H
-#define CIRCUIT_PLAYGROUND_H
+#ifndef RHUBARB_H
+#define RHUBARB_H
 
 
 #include "CodalConfig.h"
@@ -50,7 +50,7 @@ DEALINGS IN THE SOFTWARE.
 #include "SAMDTCCTimer.h"
 #include "SAMDSerial.h"
 
-#include "CircuitPlaygroundIO.h"
+#include "RhubarbIO.h"
 
 #include "CodalFiber.h"
 #include "MessageBus.h"
@@ -61,12 +61,12 @@ DEALINGS IN THE SOFTWARE.
 namespace codal
 {
     /**
-      * Class definition for a CircuitPlayground device.
+      * Class definition for a Rhubarb device.
       *
       * Represents the device as a whole, and includes member variables that represent various device drivers
       * used to control aspects of the device.
       */
-    class CircuitPlayground : public CodalDevice, public CodalComponent
+    class Rhubarb : public CodalDevice, public CodalComponent
     {
         private:
 
@@ -90,15 +90,9 @@ namespace codal
         CircuitPlaygroundIO         io;
         Button                      buttonA;
         Button                      buttonB;
-        Button                      buttonC;
         MultiButton                 buttonAB;
 
-        ZI2C                        i2c;
         ZSPI                        flashSPI;
-        CoordinateSpace             coordinateSpace;
-        LIS3DH                      accelerometer;
-        NonLinearAnalogSensor       thermometer;
-        AnalogSensor                lightSensor;
 
         ZSingleWireSerial           sws;
         JDPhysicalLayer             bus;
@@ -110,7 +104,7 @@ namespace codal
           * Create a representation of a Genuino Zero device, which includes member variables
           * that represent various device drivers used to control aspects of the board.
           */
-        CircuitPlayground();
+        Rhubarb();
 
         void idleCallback();
     };

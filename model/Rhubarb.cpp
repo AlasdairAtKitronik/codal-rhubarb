@@ -23,7 +23,7 @@ DEALINGS IN THE SOFTWARE.
 */
 
 #include "CodalConfig.h"
-#include "CircuitPlayground.h"
+#include "Rhubarb.h"
 #include "CodalDmesg.h"
 #include "Timer.h"
 #include "neopixel.h"
@@ -34,8 +34,8 @@ using namespace codal;
 RawSerial *SERIAL_DEBUG;
 #endif
 
-void cplay_dmesg_flush();
-CircuitPlayground* cplay_device_instance = NULL;
+void rhubarb_dmesg_flush();
+Rhubarb* rhubarb_device_instance = NULL;
 
 /**
   * Constructor.
@@ -43,55 +43,36 @@ CircuitPlayground* cplay_device_instance = NULL;
   * Create a representation of a GenuinoZero device, which includes member variables
   * that represent various device drivers used to control aspects of the micro:bit.
   */
-CircuitPlayground::CircuitPlayground() :
+Rhubarb::Rhubarb() :
     tc4(TC4, TC4_IRQn),
     tc3(TC3, TC3_IRQn),
     timer(tc3),
     messageBus(),
     io(),
-    buttonA(io.buttonA, DEVICE_ID_BUTTON_A, DEVICE_BUTTON_ALL_EVENTS, ACTIVE_HIGH, PullMode::Down),
-    buttonB(io.buttonB, DEVICE_ID_BUTTON_B, DEVICE_BUTTON_ALL_EVENTS, ACTIVE_HIGH, PullMode::Down),
-    buttonC(io.buttonC, DEVICE_ID_BUTTON_C, DEVICE_BUTTON_ALL_EVENTS, ACTIVE_LOW, PullMode::Up),
+    buttonA(io.buttonA, DEVICE_ID_BUTTON_A, DEVICE_BUTTON_ALL_EVENTS, ACTIVE_LOW, PullMode::Up),
+    buttonB(io.buttonB, DEVICE_ID_BUTTON_B, DEVICE_BUTTON_ALL_EVENTS, ACTIVE_LOW, PullMode::Up),
     buttonAB(DEVICE_ID_BUTTON_A, DEVICE_ID_BUTTON_B, DEVICE_ID_BUTTON_AB),
-    i2c(io.sda, io.scl),
-    flashSPI(io.flashMOSI, io.flashMISO, io.flashSCLK),
-    coordinateSpace(SIMPLE_CARTESIAN, false, COORDINATE_SPACE_ROTATED_0),
-    accelerometer(i2c, io.int1, coordinateSpace),
-    thermometer(io.temperature, DEVICE_ID_THERMOMETER, 20, 10000, 3380, 10000, 273.5),
-    lightSensor(io.light, DEVICE_ID_LIGHT_SENSOR),
     sws(io.a7),
     bus(sws, tc4, NULL, &io.led),
     jacdac(bus)
 {
 
-    cplay_device_instance = this;
+    rhubarb_device_instance = this;
     // Clear our status
     status = 0;
 
-    codal_dmesg_set_flush_fn(cplay_dmesg_flush);
+    codal_dmesg_set_flush_fn(rhubarb_dmesg_flush);
 
     // Bring up fiber scheduler.
     scheduler_init(messageBus);
 
-    messageBus.listen(DEVICE_ID_MESSAGE_BUS_LISTENER, DEVICE_EVT_ANY, this, &CircuitPlayground::onListenerRegisteredEvent);
+    messageBus.listen(DEVICE_ID_MESSAGE_BUS_LISTENER, DEVICE_EVT_ANY, this, &Rhubarb::onListenerRegisteredEvent);
 
     for(int i = 0; i < DEVICE_COMPONENT_COUNT; i++)
     {
         if(CodalComponent::components[i])
             CodalComponent::components[i]->init();
     }
-
-
-    //
-    // Device specific configuraiton
-    //
-
-    // Seed our random number generator
-    this->seedRandom(thermometer.getValue() * lightSensor.getValue());
-
-    // light sensor is very stable, so reflect this in the tuning parameters of the driver.
-    lightSensor.setSensitivity(912);
-    lightSensor.setPeriod(50);
 
     // clear neopixels
     uint8_t neopixelOff[30];
@@ -112,7 +93,7 @@ CircuitPlayground::CircuitPlayground() :
   * the compass and the accelerometer, where we only want to add them to the idle
   * fiber when someone has the intention of using these components.
   */
-void CircuitPlayground::onListenerRegisteredEvent(Event evt)
+void Rhubarb::onListenerRegisteredEvent(Event evt)
 {
     switch(evt.value)
     {
@@ -128,25 +109,6 @@ void CircuitPlayground::onListenerRegisteredEvent(Event evt)
             buttonB.setEventConfiguration(DEVICE_BUTTON_SIMPLE_EVENTS);
             buttonAB.setEventConfiguration(DEVICE_BUTTON_ALL_EVENTS);
             break;
-
-        case DEVICE_ID_ACCELEROMETER:
-        case DEVICE_ID_GESTURE:
-            // A listener has been registered for the accelerometer.
-            // The accelerometer uses lazy instantiation, we just need to read the data once to start it running.
-            accelerometer.updateSample();
-            break;
-
-        case DEVICE_ID_THERMOMETER:
-            // A listener has been registered for the thermometer.
-            // The thermometer uses lazy instantiation, we just need to read the data once to start it running.
-            thermometer.updateSample();
-            break;
-
-        case DEVICE_ID_LIGHT_SENSOR:
-            // A listener has been registered for the light sensor.
-            // The light sensor uses lazy instantiation, we just need to read the data once to start it running.
-            lightSensor.updateSample();
-            break;
     }
 }
 
@@ -155,20 +117,20 @@ void CircuitPlayground::onListenerRegisteredEvent(Event evt)
 * We use this for any low priority, backgrounf housekeeping.
 *
 */
-void CircuitPlayground::idleCallback()
+void Rhubarb::idleCallback()
 {
     codal_dmesg_flush();
 }
 
-void cplay_dmesg_flush()
+void rhubarb_dmesg_flush()
 {
 #if CONFIG_ENABLED(DMESG_SERIAL_DEBUG)
 #if DEVICE_DMESG_BUFFER_SIZE > 0
 
-    if (codalLogStore.ptr > 0 && cplay_device_instance)
+    if (codalLogStore.ptr > 0 && rhubarb_device_instance)
     {
         for (uint32_t i=0; i<codalLogStore.ptr; i++)
-            ((CircuitPlayground *)cplay_device_instance)->serial.putc(codalLogStore.buffer[i]);
+            ((Rhubarb *)cplay_device_instance)->serial.putc(codalLogStore.buffer[i]);
 
         codalLogStore.ptr = 0;
     }

@@ -1,6 +1,6 @@
 {
-    "device":"CIRCUIT_PLAYGROUND",
-    "processor":"SAMD21G18A",
+    "device":"RHUBARB",
+    "processor":"SAMD21E18A",
     "architecture":"CORTEX_M0_PLUS",
     "toolchain":"ARM_GCC",
     "post_process":"python ./utils/uf2conv.py -o <OUTPUT_HEX_DESTINATION>/<OUTPUT_HEX_NAME>.uf2 -c <OUTPUT_BIN_LOCATION>",
@@ -45,7 +45,7 @@
         "PROTOTYPE_SERCOM_I2CM_SYNC": "SERCOM1",
         "PROTOTYPE_SERCOM_USART_ASYNC": "SERCOM2"
     },
-    "definitions":"-DSAMDX1 -D__SAMD21G18A__",
+    "definitions":"-DSAMDX1 -D__SAMD21E18A__",
     "cpu_opts":"-mcpu=cortex-m0plus -mthumb",
     "asm_flags":"-fno-exceptions -fno-unwind-tables --specs=nosys.specs",
     "c_flags":"-std=c99 --specs=nosys.specs",

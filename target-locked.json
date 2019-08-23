@@ -41,8 +41,8 @@
     }, 
     "cpp_flags": "-std=c++11 -fwrapv -fno-rtti -fno-threadsafe-statics -fno-exceptions -fno-unwind-tables -Wl,--gc-sections -Wl,--sort-common -Wl,--sort-section=alignment", 
     "cpu_opts": "-mcpu=cortex-m0plus -mthumb", 
-    "definitions": "-DSAMDX1 -D__SAMD21G18A__", 
-    "device": "CIRCUIT_PLAYGROUND", 
+    "definitions": "-DSAMDX1 -D__SAMD21E18A__", 
+    "device": "RHUBARB", 
     "generate_bin": true, 
     "generate_hex": true, 
     "libraries": [
@@ -61,7 +61,7 @@
     ], 
     "linker_flags": "-Wl,--no-wchar-size-warning", 
     "post_process": "python ./utils/uf2conv.py -o <OUTPUT_HEX_DESTINATION>/<OUTPUT_HEX_NAME>.uf2 -c <OUTPUT_BIN_LOCATION>", 
-    "processor": "SAMD21G18A", 
+    "processor": "SAMD21E18A", 
     "snapshot_version": "v2.0.0", 
     "toolchain": "ARM_GCC"
 }
