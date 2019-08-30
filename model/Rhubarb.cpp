@@ -44,17 +44,16 @@ Rhubarb* rhubarb_device_instance = NULL;
   * that represent various device drivers used to control aspects of the micro:bit.
   */
 Rhubarb::Rhubarb() :
-    tc4(TC4, TC4_IRQn),
+    //tc4(TC4, TC4_IRQn),
     tc3(TC3, TC3_IRQn),
     timer(tc3),
     messageBus(),
     io(),
     buttonA(io.buttonA, DEVICE_ID_BUTTON_A, DEVICE_BUTTON_ALL_EVENTS, ACTIVE_LOW, PullMode::Up),
     buttonB(io.buttonB, DEVICE_ID_BUTTON_B, DEVICE_BUTTON_ALL_EVENTS, ACTIVE_LOW, PullMode::Up),
-    buttonAB(DEVICE_ID_BUTTON_A, DEVICE_ID_BUTTON_B, DEVICE_ID_BUTTON_AB),
-    sws(io.a7),
-    bus(sws, tc4, NULL, &io.led),
-    jacdac(bus)
+    buttonAB(DEVICE_ID_BUTTON_A, DEVICE_ID_BUTTON_B, DEVICE_ID_BUTTON_AB)
+    //bus(tc4, NULL, &io.led),
+    //jacdac(bus)
 {
 
     rhubarb_device_instance = this;
@@ -82,8 +81,8 @@ Rhubarb::Rhubarb() :
     target_wait(1);
     neopixel_send_buffer(io.neopixel, neopixelOff, sizeof(neopixelOff));
 
-    flashSPI.setFrequency(4000000);
-    flashSPI.setMode(0);
+    //flashSPI.setFrequency(4000000);
+    //flashSPI.setMode(0);
 }
 
 /**
@@ -130,7 +129,7 @@ void rhubarb_dmesg_flush()
     if (codalLogStore.ptr > 0 && rhubarb_device_instance)
     {
         for (uint32_t i=0; i<codalLogStore.ptr; i++)
-            ((Rhubarb *)cplay_device_instance)->serial.putc(codalLogStore.buffer[i]);
+            ((Rhubarb *)rhubarb_device_instance)->serial.putc(codalLogStore.buffer[i]);
 
         codalLogStore.ptr = 0;
     }
