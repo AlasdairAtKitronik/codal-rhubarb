@@ -53,10 +53,10 @@
             "url": "https://github.com/lancaster-university/codal-core"
         }, 
         {
-            "branch": "3d309bda6d1dc9568b2fa9f93078cee59397459d", 
+            "branch": "master", 
             "name": "codal-samd", 
             "type": "git", 
-            "url": "../github/codal/libraries/codal-samd"
+            "url": "https://github.com/AlasdairAtKitronik/codal-samd.git"
         }
     ], 
     "linker_flags": "-Wl,--no-wchar-size-warning", 
