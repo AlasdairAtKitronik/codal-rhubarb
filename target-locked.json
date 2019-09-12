@@ -50,7 +50,7 @@
             "branch": "1a16ec9741d99edb69cfc34974b038981eeadbd2", 
             "name": "codal-core", 
             "type": "git", 
-            "url": "https://github.com/lancaster-university/codal-core"
+            "url": "https://github.com/AlasdairAtKitronik/codal-core"
         }, 
         {
             "branch": "master", 
